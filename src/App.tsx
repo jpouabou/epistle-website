@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import React, { useEffect, useState, type ReactNode } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 import {
   BellAlertIcon,
@@ -223,9 +223,8 @@ function IconCircle({ children }: { children: React.ReactNode }) {
 }
 
 function FeatureIcon({ kind }: { kind: IconKind }) {
-  let IconComponent:
-    | ((props: React.SVGProps<SVGSVGElement>) => JSX.Element)
-    | null = null;
+  let IconComponent: React.ComponentType<React.SVGProps<SVGSVGElement>> | null =
+    null;
 
   if (kind === "scripture") IconComponent = BookOpenIcon;
   if (kind === "video") IconComponent = PlayCircleIcon;
@@ -245,32 +244,6 @@ function FeatureIcon({ kind }: { kind: IconKind }) {
     <IconCircle>
       <IconComponent className="h-5 w-5 text-white" aria-hidden="true" />
     </IconCircle>
-  );
-}
-
-function TestimonialAvatar({
-  initials,
-  index,
-}: {
-  initials: string;
-  index: number;
-}) {
-  const palette =
-    index % 3 === 0
-      ? "from-white via-neutral-400 to-neutral-700"
-      : index % 3 === 1
-      ? "from-neutral-50 via-neutral-500 to-neutral-800"
-      : "from-neutral-200 via-neutral-400 to-neutral-700";
-
-  return (
-    <div className="relative h-10 w-10 overflow-hidden rounded-full border border-white/40 bg-neutral-900 shadow-[0_0_0_1px_rgba(0,0,0,0.9)]">
-      <div
-        className={`absolute inset-0 bg-gradient-to-br ${palette} opacity-80`}
-      />
-      <span className="relative z-10 flex h-full w-full items-center justify-center text-xs font-semibold text-black">
-        {initials}
-      </span>
-    </div>
   );
 }
 
