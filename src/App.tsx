@@ -429,7 +429,7 @@ function HomePage() {
                 key={feature.title}
                 variants={fadeUpStaggerChild}
                 transition={viewTransition}
-                className="flex flex-col gap-3 rounded-2xl border border-white/12 bg-neutral-950/90 p-5 shadow-[0_18px_45px_rgba(0,0,0,0.7)]"
+                className="flex flex-col gap-3 rounded-2xl border border-white/12 bg-neutral-950/90 p-5 shadow-[0_18px_45px_rgba(0,0,0,0.7)] transition-transform duration-200 hover:-translate-y-1 hover:shadow-[0_22px_60px_rgba(0,0,0,0.9)] hover:border-white/20"
               >
                 <FeatureIcon kind={feature.icon} />
                 <h3 className="text-sm font-semibold text-white">
@@ -628,10 +628,10 @@ function HomePage() {
                 key={character.name}
                 variants={fadeUpStaggerChild}
                 transition={viewTransition}
-                className="flex flex-col gap-4 rounded-2xl border border-white/8 bg-neutral-950/90 p-5 shadow-[0_18px_45px_rgba(0,0,0,0.7)]"
+                className="flex flex-col gap-4 rounded-2xl border border-white/8 bg-neutral-950/90 p-5 shadow-[0_18px_45px_rgba(0,0,0,0.7)] transition-transform duration-200 hover:scale-[1.02] hover:shadow-[0_22px_60px_rgba(0,0,0,0.9)]"
               >
                 <div className="flex flex-col items-start gap-3">
-                  <div className="relative h-24 w-24 overflow-hidden rounded-full border-[1.5px] border-white bg-neutral-900 shadow-[0_0_0_1px_rgba(0,0,0,0.85)]">
+                  <div className="relative h-24 w-24 overflow-hidden rounded-full bg-neutral-900 shadow-[0_0_0_1px_rgba(0,0,0,0.85)]">
                     <img
                       src={character.image}
                       alt={character.name}
