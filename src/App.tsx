@@ -1,5 +1,6 @@
 import React, { useEffect, useState, type ReactNode } from "react";
 import { Link, Route, Routes } from "react-router-dom";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   BellAlertIcon,
   BookmarkIcon,
@@ -13,6 +14,24 @@ import {
 } from "@heroicons/react/24/solid";
 import Privacy from "./pages/Privacy";
 import Tos from "./pages/Tos";
+
+const fadeUp = {
+  initial: { opacity: 0, y: 14 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const fadeUpStaggerParent = {
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08, delayChildren: 0 },
+  },
+  initial: { opacity: 0 },
+};
+
+const fadeUpStaggerChild = {
+  initial: { opacity: 0, y: 14 },
+  visible: { opacity: 1, y: 0 },
+};
 
 type IconKind =
   | "scripture"
@@ -269,9 +288,15 @@ function GhostButton({ label, href }: { label: string; href: string }) {
   );
 }
 
-function App() {
-  const year = new Date().getFullYear();
+function HomePage() {
+  const prefersReducedMotion = useReducedMotion();
   const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const transition = prefersReducedMotion
+    ? { duration: 0 }
+    : { duration: 0.55, ease: "easeOut" as const };
+  const viewTransition = prefersReducedMotion
+    ? { duration: 0 }
+    : { duration: 0.5, ease: "easeOut" as const };
 
   useEffect(() => {
     if (testimonials.length <= 1) return;
@@ -284,132 +309,98 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black text-neutral-100">
-      {/* Navigation */}
-      <header className="sticky top-0 z-30 border-b border-white/10 bg-black/85 backdrop-blur">
-        <nav
-          className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8"
-          aria-label="Primary"
-        >
-          <Link to="/" className="flex items-center gap-3">
-            <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-2xl bg-white p-0 shadow-sm">
-              <img
-                src="/epistle-logo.svg"
-                alt="Epistle logo"
-                className="absolute inset-0 h-full w-full scale-[1.4] object-cover object-center"
-              />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-sm font-semibold tracking-[0.18em] uppercase">
-                Epistle
-              </span>
-              <span className="text-[11px] text-neutral-400">
-                A daily encounter
-              </span>
-            </div>
-          </Link>
-          <div className="flex items-center gap-6">
-            <div className="hidden text-xs font-medium text-neutral-300 sm:flex sm:items-center sm:gap-6">
-              <a href="#features" className="hover:text-white">
-                Product
-              </a>
-              <a href="#rhythm" className="hover:text-white">
-                Rhythm
-              </a>
-              <a href="#testimonials" className="hover:text-white">
-                Voices
-              </a>
-            </div>
-            <PrimaryButton label="Join Epistle" />
-          </div>
-        </nav>
-      </header>
-
-      <main id="top">
-        <Routes>
-          <Route path="/" element={<>
+    <>
         {/* Hero */}
         <section className="relative border-b border-white/10">
           <div className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.12)_0,_transparent_60%)]" />
           <div className="relative mx-auto flex max-w-6xl flex-col gap-12 px-4 py-16 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:py-24">
-            <div className="max-w-xl space-y-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.26em] text-neutral-400">
+            <motion.div
+              className="max-w-xl space-y-6"
+              variants={fadeUpStaggerParent}
+              initial="initial"
+              animate="visible"
+            >
+              <motion.p
+                className="text-xs font-semibold uppercase tracking-[0.26em] text-neutral-400"
+                variants={fadeUpStaggerChild}
+                transition={transition}
+              >
                 A quiet, daily liturgy
-              </p>
-              <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-5xl">
+              </motion.p>
+              <motion.h1
+                className="text-3xl font-semibold tracking-tight text-white sm:text-4xl lg:text-5xl"
+                variants={fadeUpStaggerChild}
+                transition={transition}
+              >
                 A daily encounter with the Word.
-              </h1>
-              <p className="text-base leading-relaxed text-neutral-300">
+              </motion.h1>
+              <motion.p
+                className="text-base leading-relaxed text-neutral-300"
+                variants={fadeUpStaggerChild}
+                transition={transition}
+              >
                 Epistle gives you one KJV passage and one short video encounter
                 each day—delivered by a calm avatar, designed to help you end
                 the day with Scripture, not with a feed.
-              </p>
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              </motion.p>
+              <motion.div
+                className="flex flex-col gap-3 sm:flex-row sm:items-center"
+                variants={fadeUpStaggerChild}
+                transition={transition}
+              >
                 <PrimaryButton label="Join Epistle" />
                 <GhostButton label="See the rhythm" href="#rhythm" />
-              </div>
-              <p className="text-sm text-neutral-500">
+              </motion.div>
+              <motion.p
+                className="text-sm text-neutral-500"
+                variants={fadeUpStaggerChild}
+                transition={transition}
+              >
                 Built to encourage reflection, and meditation. No distractions.
-              </p>
-            </div>
+              </motion.p>
+            </motion.div>
 
-            <div className="flex w-full justify-center lg:w-auto lg:justify-end">
-              <div className="relative h-[420px] w-[230px] rounded-[2.4rem] border border-white/15 bg-neutral-950 p-[10px] shadow-[0_22px_70px_rgba(0,0,0,0.9)]">
-                <div className="absolute inset-x-10 top-0 h-6 rounded-b-2xl bg-black" />
-                <div className="relative flex h-full w-full flex-col rounded-[1.9rem] border border-white/10 bg-black px-4 pb-4 pt-6">
-                  <div className="mb-4 flex items-center justify-between gap-3">
-                    <div className="flex flex-col">
-                      <span className="text-[11px] uppercase tracking-[0.18em] text-neutral-500">
-                        Tonight&apos;s encounter
-                      </span>
-                      <span className="text-sm font-medium text-white">
-                        1 John 1:7–9 (KJV)
-                      </span>
-                    </div>
-                    <span className="rounded-full bg-white/5 px-2 py-0.5 text-[10px] text-neutral-200">
-                      &lt; 60 sec
-                    </span>
-                  </div>
-                  <div className="space-y-2 text-xs text-neutral-300">
-                    <p className="leading-relaxed">
-                      “But if we walk in the light, as he is in the light, we
-                      have fellowship one with another...”
-                    </p>
-                    <p className="text-[11px] text-neutral-500">
-                      A brief reflection follows, inviting you to linger—not to
-                      skim.
-                    </p>
-                  </div>
-                  <div className="mt-4 flex-1">
-                    <div className="relative flex h-full items-center justify-center overflow-hidden rounded-2xl border border-white/15 bg-neutral-900">
-                      <button
-                        type="button"
-                        className="flex h-14 w-14 items-center justify-center rounded-full border border-white/40 bg-black/80 text-white shadow-[0_0_0_1px_rgba(255,255,255,0.4)]"
-                        aria-label="Play encounter preview"
-                      >
-                        <svg
-                          viewBox="0 0 24 24"
-                          aria-hidden="true"
-                          className="h-5 w-5 fill-current"
-                        >
-                          <path d="M9 7.27c0-.9.97-1.46 1.75-1l6.1 3.53a1.15 1.15 0 0 1 0 2l-6.1 3.53c-.78.45-1.75-.1-1.75-1V7.27Z" />
-                        </svg>
-                      </button>
-                    </div>
-                  </div>
-                  <div className="mt-4 flex items-center justify-between text-[11px] text-neutral-500">
-                    <span>Day 3 of 7</span>
-                    <span>Keeps your place, not your data.</span>
-                  </div>
-                </div>
+            <motion.div
+              className="flex w-full justify-center lg:w-auto lg:justify-end"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { duration: 0.6, delay: 0.2, ease: "easeOut" }
+              }
+            >
+              <div className="relative h-[546px] w-[338px] sm:w-[364px] overflow-visible">
+                <motion.img
+                  src="/simulator-1.png"
+                  alt="Epistle app encounter screen"
+                  className="absolute bottom-0 left-1/2 h-full w-auto max-h-[546px] max-w-[338px] -translate-x-1/2 scale-110 object-contain object-bottom drop-shadow-2xl"
+                  animate={
+                    prefersReducedMotion
+                      ? {}
+                      : { y: [0, -6, 0] }
+                  }
+                  transition={
+                    prefersReducedMotion
+                      ? { duration: 0 }
+                      : { duration: 4.5, repeat: Infinity, ease: "easeInOut" }
+                  }
+                />
               </div>
-            </div>
+            </motion.div>
           </div>
         </section>
 
         {/* Features */}
         <ShellSection id="features" tone="raised">
-          <div className="space-y-4">
+          <motion.div
+            className="space-y-4"
+            initial={fadeUp.initial}
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={fadeUp}
+            transition={viewTransition}
+          >
             <p className="text-xs font-semibold uppercase tracking-[0.26em] text-neutral-400">
               The product
             </p>
@@ -423,11 +414,20 @@ function App() {
                 you.
               </p>
             </div>
-          </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          </motion.div>
+          <motion.div
+            className="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
+            variants={fadeUpStaggerParent}
+            initial="initial"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ ...viewTransition, staggerChildren: 0.07, delayChildren: 0.1 }}
+          >
             {features.map((feature) => (
-              <article
+              <motion.article
                 key={feature.title}
+                variants={fadeUpStaggerChild}
+                transition={viewTransition}
                 className="flex flex-col gap-3 rounded-2xl border border-white/12 bg-neutral-950/90 p-5 shadow-[0_18px_45px_rgba(0,0,0,0.7)]"
               >
                 <FeatureIcon kind={feature.icon} />
@@ -437,15 +437,22 @@ function App() {
                 <p className="text-sm leading-relaxed text-neutral-300">
                   {feature.body}
                 </p>
-              </article>
+              </motion.article>
             ))}
-          </div>
+          </motion.div>
         </ShellSection>
 
         {/* Rhythm / How it works */}
         <ShellSection id="rhythm" tone="soft">
-          <div className="grid gap-10 lg:grid-cols-2 lg:items-start">
-            <div className="space-y-4">
+          <motion.div
+            className="grid gap-10 lg:grid-cols-2 lg:items-start"
+            variants={fadeUpStaggerParent}
+            initial="initial"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ ...viewTransition, staggerChildren: 0.08, delayChildren: 0 }}
+          >
+            <motion.div className="space-y-4" variants={fadeUpStaggerChild} transition={viewTransition}>
               <p className="text-xs font-semibold uppercase tracking-[0.26em] text-neutral-400">
                 How it works
               </p>
@@ -501,15 +508,17 @@ function App() {
               <p className="pt-2 text-sm text-neutral-500">
                 Optimized for morning devotions and starting the day with Scripture.
               </p>
-            </div>
-            <div className="space-y-4">
+            </motion.div>
+            <motion.div className="space-y-4" variants={fadeUpStaggerChild} transition={viewTransition}>
               <h3 className="text-sm font-semibold text-white">
                 A rhythm that fits ordinary days.
               </h3>
               <div className="grid gap-4">
                 {secondaryHighlights.map((item) => (
-                  <article
+                  <motion.article
                     key={item.title}
+                    variants={fadeUpStaggerChild}
+                    transition={viewTransition}
                     className="flex items-start gap-3 rounded-2xl border border-white/10 bg-neutral-950/90 p-4"
                   >
                     <FeatureIcon kind={item.icon} />
@@ -521,16 +530,23 @@ function App() {
                         {item.body}
                       </p>
                     </div>
-                  </article>
+                  </motion.article>
                 ))}
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </ShellSection>
 
         {/* Encounter preview */}
         <ShellSection id="preview" tone="raised">
-          <div className="space-y-4">
+          <motion.div
+            className="space-y-4"
+            initial={fadeUp.initial}
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={fadeUp}
+            transition={viewTransition}
+          >
             <p className="text-xs font-semibold uppercase tracking-[0.26em] text-neutral-400">
               Preview
             </p>
@@ -544,8 +560,14 @@ function App() {
                 witnesses—in this case, Paul on Romans 8:28.
               </p>
             </div>
-          </div>
-          <div className="mt-4 flex justify-center">
+          </motion.div>
+          <motion.div
+            className="mt-4 flex justify-center"
+            initial={{ opacity: 0, y: 16, scale: 0.98 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={viewTransition}
+          >
             <div className="w-full max-w-3xl rounded-3xl border border-white/15 bg-neutral-950/90 p-4 shadow-[0_22px_70px_rgba(0,0,0,0.9)]">
               <div className="relative aspect-video overflow-hidden rounded-2xl border border-white/15 bg-black">
                 <video
@@ -561,12 +583,19 @@ function App() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </ShellSection>
 
         {/* Characters / Witnesses */}
         <ShellSection id="witnesses" tone="raised">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <motion.div
+            className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"
+            initial={fadeUp.initial}
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={fadeUp}
+            transition={viewTransition}
+          >
             <div className="space-y-3">
               <p className="text-xs font-semibold uppercase tracking-[0.26em] text-neutral-400">
                 The witnesses
@@ -584,11 +613,20 @@ function App() {
             <div className="hidden text-sm text-neutral-500 lg:block">
               Prophets. Apostles. Witnesses
             </div>
-          </div>
-          <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          </motion.div>
+          <motion.div
+            className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+            variants={fadeUpStaggerParent}
+            initial="initial"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.12 }}
+            transition={{ ...viewTransition, staggerChildren: 0.07, delayChildren: 0.1 }}
+          >
             {characters.map((character) => (
-              <article
+              <motion.article
                 key={character.name}
+                variants={fadeUpStaggerChild}
+                transition={viewTransition}
                 className="flex flex-col gap-4 rounded-2xl border border-white/8 bg-neutral-950/90 p-5 shadow-[0_18px_45px_rgba(0,0,0,0.7)]"
               >
                 <div className="flex flex-col items-start gap-3">
@@ -611,22 +649,33 @@ function App() {
                 <p className="text-sm leading-relaxed text-neutral-300">
                   {character.verseHint}
                 </p>
-              </article>
+              </motion.article>
             ))}
-            <div className="flex flex-col justify-center rounded-2xl border border-dashed border-white/20 bg-neutral-950/50 p-5">
+            <motion.article
+              variants={fadeUpStaggerChild}
+              transition={viewTransition}
+              className="flex flex-col justify-center rounded-2xl border border-dashed border-white/20 bg-neutral-950/50 p-5"
+            >
               <p className="text-sm font-medium text-neutral-400">
                 And more to come
               </p>
               <p className="mt-1 text-xs text-neutral-500">
                 Additional witnesses from Scripture will join over time.
               </p>
-            </div>
-          </div>
+            </motion.article>
+          </motion.div>
         </ShellSection>
 
         {/* Testimonials – vertical auto cycle */}
         <ShellSection id="testimonials" tone="soft">
-          <div className="space-y-3">
+          <motion.div
+            className="space-y-3"
+            initial={fadeUp.initial}
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={fadeUp}
+            transition={viewTransition}
+          >
             <p className="text-xs font-semibold uppercase tracking-[0.26em] text-neutral-400">
               Early voices
             </p>
@@ -639,13 +688,26 @@ function App() {
                 Testimonials rotate automatically. You can tap a name to jump.
               </span>
             </div>
-          </div>
-          <div className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:items-start">
+          </motion.div>
+          <motion.div
+            className="mt-6 grid gap-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:items-start"
+            initial={fadeUp.initial}
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.15 }}
+            variants={fadeUp}
+            transition={viewTransition}
+          >
             <div className="relative flex min-h-56 items-center justify-center overflow-hidden rounded-2xl border border-white/12 bg-neutral-950/90 p-8">
               {testimonials[activeTestimonial] && (
-                <blockquote className="text-center text-lg leading-relaxed text-neutral-100 sm:text-xl">
+                <motion.blockquote
+                  key={activeTestimonial}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={prefersReducedMotion ? { duration: 0 } : { duration: 0.35, ease: "easeOut" }}
+                  className="text-center text-lg leading-relaxed text-neutral-100 sm:text-xl"
+                >
                   “{testimonials[activeTestimonial].quote}”
-                </blockquote>
+                </motion.blockquote>
               )}
             </div>
             <div className="flex flex-col gap-3">
@@ -685,12 +747,19 @@ function App() {
                 ))}
               </ul>
             </div>
-          </div>
+          </motion.div>
         </ShellSection>
 
         {/* CTA */}
         <ShellSection id="cta" tone="raised">
-          <div className="rounded-3xl border border-white/12 bg-neutral-950 px-6 py-10 text-center sm:px-10">
+          <motion.div
+            className="rounded-3xl border border-white/12 bg-neutral-950 px-6 py-10 text-center sm:px-10"
+            initial={fadeUp.initial}
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={fadeUp}
+            transition={viewTransition}
+          >
             <p className="text-xs font-semibold uppercase tracking-[0.26em] text-neutral-400">
               Do not delay
             </p>
@@ -707,9 +776,55 @@ function App() {
                 iOS first. Other platforms thoughtfully considered over time.
               </span>
             </div>
-          </div>
+          </motion.div>
         </ShellSection>
-          </>} />
+          </> ); }
+
+function App() {
+  const year = new Date().getFullYear();
+  return (
+    <div className="min-h-screen bg-black text-neutral-100">
+      <header className="sticky top-0 z-30 border-b border-white/10 bg-black/85 backdrop-blur">
+        <nav
+          className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8"
+          aria-label="Primary"
+        >
+          <Link to="/" className="flex items-center gap-3">
+            <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-2xl bg-white p-0 shadow-sm">
+              <img
+                src="/epistle-logo.svg"
+                alt="Epistle logo"
+                className="absolute inset-0 h-full w-full scale-[1.4] object-cover object-center"
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-sm font-semibold tracking-[0.18em] uppercase">
+                Epistle
+              </span>
+              <span className="text-[11px] text-neutral-400">
+                A daily encounter
+              </span>
+            </div>
+          </Link>
+          <div className="flex items-center gap-6">
+            <div className="hidden text-xs font-medium text-neutral-300 sm:flex sm:items-center sm:gap-6">
+              <a href="#features" className="hover:text-white">
+                Product
+              </a>
+              <a href="#rhythm" className="hover:text-white">
+                Rhythm
+              </a>
+              <a href="#testimonials" className="hover:text-white">
+                Voices
+              </a>
+            </div>
+            <PrimaryButton label="Join Epistle" />
+          </div>
+        </nav>
+      </header>
+      <main id="top">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/tos" element={<Tos />} />
         </Routes>
