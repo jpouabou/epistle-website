@@ -12,6 +12,7 @@ import {
   Squares2X2Icon,
   UserIcon,
 } from "@heroicons/react/24/solid";
+import NotFound from "./pages/NotFound";
 import Privacy from "./pages/Privacy";
 import Tos from "./pages/Tos";
 
@@ -463,54 +464,54 @@ function HomePage() {
                 Epistle is intentionally small. You open the app, receive the
                 encounter, and then you are done. No looping, no infinite scroll.
               </p>
-              <ul className="mt-4 space-y-4 text-sm text-neutral-200">
+              <ul className="mt-4 space-y-4 text-base text-neutral-200">
                 <li className="flex gap-3">
-                  <span className="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/30 text-[11px]">
+                  <span className="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-[11px] font-medium text-black">
                     1
                   </span>
                   <div>
                     <p className="font-medium text-white">Open Epistle.</p>
-                    <p className="text-sm text-neutral-300">
+                    <p className="text-base text-neutral-300">
                       At your chosen time—a quiet trigger to turn toward the
                       Word instead of the feed.
                     </p>
                   </div>
                 </li>
                 <li className="flex gap-3">
-                  <span className="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/30 text-[11px]">
+                  <span className="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-[11px] font-medium text-black">
                     2
                   </span>
                   <div>
                     <p className="font-medium text-white">
                       Receive today&apos;s verse and encounter.
                     </p>
-                    <p className="text-sm text-neutral-300">
+                    <p className="text-base text-neutral-300">
                       A KJV passage appears with a brief, avatar‑led reflection
                       that stays under a minute.
                     </p>
                   </div>
                 </li>
                 <li className="flex gap-3">
-                  <span className="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full border border-white/30 text-[11px]">
+                  <span className="mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-[11px] font-medium text-black">
                     3
                   </span>
                   <div>
                     <p className="font-medium text-white">
                       Reflect, save, and share if you wish.
                     </p>
-                    <p className="text-sm text-neutral-300">
+                    <p className="text-base text-neutral-300">
                       Sit with the verse, mark it as a favorite, or quietly send
                       it to someone who might need it.
                     </p>
                   </div>
                 </li>
               </ul>
-              <p className="pt-2 text-sm text-neutral-500">
+              <p className="pt-2 text-base text-neutral-500">
                 Optimized for morning devotions and starting the day with Scripture.
               </p>
             </motion.div>
             <motion.div className="space-y-4" variants={fadeUpStaggerChild} transition={viewTransition}>
-              <h3 className="text-sm font-semibold text-white">
+              <h3 className="text-base font-semibold text-white">
                 A rhythm that fits ordinary days.
               </h3>
               <div className="grid gap-4">
@@ -523,10 +524,10 @@ function HomePage() {
                   >
                     <FeatureIcon kind={item.icon} />
                     <div>
-                      <p className="text-xs font-medium text-white">
+                      <p className="text-base font-medium text-white">
                         {item.title}
                       </p>
-                      <p className="mt-1 text-sm leading-relaxed text-neutral-300">
+                      <p className="mt-1 text-base leading-relaxed text-neutral-300">
                         {item.body}
                       </p>
                     </div>
@@ -574,7 +575,7 @@ function HomePage() {
                   className="h-full w-full object-cover"
                   src="/video/Paul%20Ro%208_28_1080p.mp4"
                   controls
-                  preload="metadata"
+                  preload="auto"
                 >
                   Your browser does not support the video tag.
                 </video>
@@ -827,6 +828,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/tos" element={<Tos />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
 
